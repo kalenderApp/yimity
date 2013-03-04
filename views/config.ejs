@@ -1,0 +1,111 @@
+<% include header %>
+<% include member_left %>
+  <div class="menber_right">
+    <div class="menber_avatar">
+      <div class="menber_useravatar"><img src="images/temp/touxiang.jpg" width="40" height="40" alt="用户头像" /></div>
+      <p><span>系统设置</p>
+    </div>
+    <div class="menber_welcome">
+      <form id="post_new" method="post" action="/">
+        <p class="menber_welcomeuser"><span>网站名称</span><input type="text" id="blog_name" class="newcat"><input type="submit" id="submit" value="更  新"></p>
+        <p class="menber_welcomeuser"><span>网站描述</span><input type="text" id="blog_description" class="newcat"></p>
+      </form>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    //分类删除
+    //分类显示隐藏
+    $(".catlists").hover(function(){
+      var $_this = $(this);
+      $_this.children(".delete").stop().fadeIn(100);//.show();
+    },function(){
+      var $_this = $(this);
+      $_this.children(".delete").stop().fadeOut(100);//.hide();
+    });
+    // 删除分类
+    $(".delete").click(function(){
+      var $_this = $(this);
+      var id     = $_this.parent(".catlists").attr("data-cat");
+      alert(id);
+      return false
+    });
+
+
+
+
+    //分类
+    $(".cat").click(function(){
+      toggle($(this),"select",catSelect)
+    });
+    //提交
+    $("#post_new").submit(function(){
+      var cat = $(".newcat").val();
+      if (cat == '') {
+        alert("未填写文章分类！");
+        return false
+      }
+      $("#submit").val("提交中");
+      $.ajax({
+        type:"post",
+        url:'/saveConfig',
+        data:{"blogname":$("#blog_name").val(),"blogdescription":$("#blog_description").val()},
+        success:function(json){
+          var data = $.parseJSON(json);
+          $("#submit").val(data.msg);
+        },
+        error:function(){
+          $("#submit").val("发表失败");
+        },
+        timeout:5000
+      });
+      return false
+    });
+  });
+
+
+
+
+
+  var tcat = [];
+
+  function catSelect(aclass){
+    var $cat = $(".cat");
+        tcat = []
+    $cat.each(function(index){
+      var $eq = $cat.eq(index);
+      var isselect = $eq.hasClass(aclass);
+      if (isselect) {
+        tcat.push($eq.attr("data-cat"))
+      };
+    })
+
+    /*
+    var $cat = $(".cat");
+    var leng = $cat.length;
+    var html = '';
+    for (var i = 0; i < leng; i++) {
+      html += '<input'
+    };*/
+    //var aclass = 'aa', val = 'aa';
+    //var html = '<input type="checkbox" class="'+aclass+'" value="'+val+'" checked>';
+  }
+
+  function toggle(obj,aclass,callback){
+      var $this = obj;
+      var isselect = $this.hasClass(aclass);
+      if (isselect) {
+        $this.removeClass(aclass);
+      } else {
+        $this.addClass(aclass);
+      };
+      if (typeof callback === 'function') {
+        callback(aclass);
+      }
+      
+  }
+
+</script>
+<% include member_footer %>

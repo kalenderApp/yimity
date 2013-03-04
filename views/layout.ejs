@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title><%= title %></title>
+	<link rel="stylesheet" type="text/css" href="stylesheets/layout.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+</head>
+<body>
+	<div id="top">
+		<div class="navtitle">
+	      <h2><a href="/">NodeJS</a></h2>
+	      <% if(false && !(req.session.user)) { %>
+	      <span class="fr"><a href="#">登录</a></span><span class="fr"><a href="/register">注册</a></span>
+	      <% } else { %>
+	      <span class="fr"><a href="#">个人中心</a></span><span class="fr"><a href="/logout">退出</a></span>
+	      <% } %>
+	    </div>
+	</div>

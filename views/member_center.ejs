@@ -1,0 +1,28 @@
+<% include header %>
+<% include member_left %>
+  <div class="menber_right">
+    <div class="menber_avatar">
+      <div class="menber_useravatar"><img src="images/temp/touxiang.jpg" width="40" height="40" alt="用户头像" /></div>
+      <p><span><%- email %></span>，欢迎来到用户中心！</p>
+    </div>
+    <div class="menber_welcome">
+      <p class="menber_welcomeuser">亲爱的 <%- email %> 欢迎您回来</p>
+      <p class="menber_email">
+        安全邮箱：<% if(email) { %><%= email %> <% } %><br />
+        文章总数：<span><% if(size) { %><%= size %> <% } %></span><br />
+        <!--积分：<span>500分</span>-->
+      </p>
+      
+      <div class="menber_prompt_top"></div>
+      <!--<div class="menber_prompt_bottom">
+        <p>
+         <span> 友情提示：</span><br />
+         1、<br />
+         2、
+        </p>
+      </div>-->
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<% include member_footer %>

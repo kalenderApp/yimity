@@ -1,0 +1,166 @@
+<% include header %>
+<% include member_left %>
+  <div class="menber_right">
+    <div class="menber_avatar">
+      <div class="menber_useravatar"><img src="images/temp/touxiang.jpg" width="40" height="40" alt="用户头像" /></div>
+      <p><span>添加新分类</p>
+    </div>
+    <div class="menber_welcome">
+      <form id="post_new" method="post" action="/">
+        <p class="menber_welcomeuser"><span>新分类</span><input type="text" id="post_title" class="newcat"><input type="submit" id="submit" value="添  加"></p>
+        
+
+        <!--<div class="menber_prompt_top">
+          <div class="menber_welcomeuser">分类
+            <div id="cat">
+              <span class="cat" data-cat="1">烦乱</span><span class="cat" data-cat="2">未分类</span><span class="cat" data-cat="3">烦乱</span><span class="cat" data-cat="4">未分类</span><span class="cat" data-cat="5">烦乱</span><span class="cat" data-cat="6">未分类</span>
+            </div>
+        </div>
+      </div>
+        <div class="menber_prompt_top"><p class="menber_welcomeuser">标签<input type="text" id="post_tag"></p></div>-->
+      </form>
+
+      <div class="menber_welcomeuser">
+          分类目录
+          <!--<div id="category_lists">-->
+          <div id="cat">
+            <% if(cats instanceof Array) { %>
+            <% if(cats.length > 0) { %>
+            <% for(var i=0,len=cats.length;i<len;i++) { %>
+            <!--<li class="line"><span class="fl"><a href="/post/<%= cats[i]["_id"] %>" target="_blank"><%= cats[i]["cat"] %></a></span><span class="fr action"><a href="/edit/<%= cats[i]["_id"] %>">编辑</a><a href="/post/<%= cats[i]["_id"] %>" target="_blank">查看</a><a href="/delete/<%= cats[i]["_id"] %>" class="delete">删除</a></span></li>-->
+
+              <span class="cat catlists" data-cat="<%= cats[i]["_id"] %>"><%= cats[i]["cat"] %><a class="delete" href="/deletecatby/<%= cats[i]["_id"] %>">x</a></span>
+
+
+
+            <% } } else { %>
+            <span style="text-align:center;">还没有添加分类呢！</span>
+            <% } } else { %>
+            <span style="text-align:center;">服务器错误，请稍后重试！</span>
+            <% } %>
+          </div>
+        </div>
+
+
+
+
+
+
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    //分类删除
+    //分类显示隐藏
+    $(".catlists").hover(function(){
+      var $_this = $(this);
+      $_this.children(".delete").stop().fadeIn(100);//.show();
+    },function(){
+      var $_this = $(this);
+      $_this.children(".delete").stop().fadeOut(100);//.hide();
+    });
+    // 删除分类
+    $(".delete").click(function(){
+      var $_this = $(this);
+      var id     = $_this.parent(".catlists").attr("data-cat");
+      
+      $.ajax({
+        type:"get",
+        url:$_this.attr("href"),
+        //data:{"id":id},
+        success:function(json){
+          var data = $.parseJSON(json);
+          if (data.code == 1) {
+            $_this.parent(".catlists").fadeOut();
+          }
+          alert(data.msg);
+        },
+        error:function(){
+          alert("发表失败");
+        },
+        timeout:5000
+      });
+
+      return false
+    });
+
+
+
+
+    //分类
+    /*
+    $(".cat").click(function(){
+      toggle($(this),"select",catSelect)
+    });
+    */
+    //提交
+    $("#post_new").submit(function(){
+      var cat = $(".newcat").val();
+      if (cat == '') {
+        alert("未填写文章分类！");
+        return false
+      }
+      $("#submit").val("提交中");
+      $.ajax({
+        type:"post",
+        url:'cats',
+        data:{"cat":cat},
+        success:function(json){
+          var data = $.parseJSON(json);
+          $("#submit").val(data.msg);
+        },
+        error:function(){
+          $("#submit").val("发表失败");
+        },
+        timeout:5000
+      });
+      return false
+    });
+  });
+
+
+
+
+/*
+  var tcat = [];
+
+  function catSelect(aclass){
+    var $cat = $(".cat");
+        tcat = []
+    $cat.each(function(index){
+      var $eq = $cat.eq(index);
+      var isselect = $eq.hasClass(aclass);
+      if (isselect) {
+        tcat.push($eq.attr("data-cat"))
+      };
+    })
+*/
+    /*
+    var $cat = $(".cat");
+    var leng = $cat.length;
+    var html = '';
+    for (var i = 0; i < leng; i++) {
+      html += '<input'
+    };*/
+    //var aclass = 'aa', val = 'aa';
+    //var html = '<input type="checkbox" class="'+aclass+'" value="'+val+'" checked>';
+  //}
+
+  function toggle(obj,aclass,callback){
+      var $this = obj;
+      var isselect = $this.hasClass(aclass);
+      if (isselect) {
+        $this.removeClass(aclass);
+      } else {
+        $this.addClass(aclass);
+      };
+      if (typeof callback === 'function') {
+        callback(aclass);
+      }
+      
+  }
+
+</script>
+<% include member_footer %>

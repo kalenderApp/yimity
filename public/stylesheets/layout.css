@@ -1,0 +1,89 @@
+@charset "UTF-8";
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0}fieldset,img{border:0}:focus{outline:0}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:normal;font-weight:normal}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}abbr,acronym{border:0;font-variant:normal}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit}code,kbd,samp,tt{font-size:100%}input,button,textarea,select{*font-size:100%}body{line-height:1.5}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th{text-align:left}sup,sub{font-size:100%;vertical-align:baseline}:link,:visited ,ins{text-decoration:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+
+html,body {
+	height:100%;
+	margin:0 auto;
+	padding:0;
+	font:12px/1.8 'Microsoft YaHei',Tahoma, Geneva, '\5fae\8f6f\96c5\9ed1','\5B8B\4F53';
+	color:#5B636A;
+	font-size: 16px;
+}
+#top,#bottom {
+	height: 70px;
+	text-align: left;
+	overflow: hidden;
+	background: #4682D9;
+}
+#bottom {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+#top h2 {
+	height:40px;
+	line-height:70px;
+	font-size:26px;
+	padding-left:30px;
+	color:#FFF;
+	float:left;
+}
+.title {
+	width:960px;
+	height:70px;
+	line-height:70px;
+	font-size:14px;
+}
+.fr {
+	float:right;
+}
+
+#register-form{
+	width:490px;
+	height:300px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-left:-200px;
+	margin-top:-150px;
+}
+
+label {
+	display:block;
+	margin:10px auto;
+}
+.text {
+	width:300px;
+	height:40px;
+	padding:10 9px;
+	line-height:20px;
+	font-size:16px;
+	color:#666;
+	border:1px solid #D6D6D6;
+	border-top-color:#AFAFAF;
+	background:#FFF url(../images/icons/text.gif) no-repeat 0 0;
+}
+
+#submit {
+	width: 158px;
+	line-height: 40px;
+	text-align: center;
+	overflow: hidden;
+	font-size: 16px;
+	color: #DDD;
+	border:none;
+	cursor:pointer;
+	background:#4682D9;
+	margin-left: 58px;
+}
+.tips {
+	height:30px;
+	font-size:14px;
+	text-align: center;
+}
+.desp {
+	padding-top:30px;
+	width:410px;
+	font-size:14px;
+}

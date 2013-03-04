@@ -1,0 +1,136 @@
+<% include header %>
+<link rel="stylesheet" href="/redactor/redactor.css" />
+<script src="/redactor/redactor.js"></script>
+<% include member_left %>
+  <div class="menber_right">
+    <div class="menber_avatar">
+      <div class="menber_useravatar"><img src="images/temp/touxiang.jpg" width="40" height="40" alt="用户头像" /></div>
+      <p><span>发表新文章</p>
+    </div>
+    <div class="menber_welcome">
+      <form id="post_new" method="post" action="/">
+        <p class="menber_welcomeuser"><span>文章标题</span><input type="text" id="post_title"><input type="submit" id="submit" value="提  交"></p>
+        <p class="menber_welcomeuser">
+          文章内容
+          <textarea id="pt_content" name="pt_content"></textarea>
+        </p>
+
+        <div class="menber_prompt_top">
+          <div class="menber_welcomeuser">分类
+            <div id="cat">
+              <!--<span class="cat" data-cat="1">烦乱</span><span class="cat" data-cat="2">未分类</span><span class="cat" data-cat="3">烦乱</span><span class="cat" data-cat="4">未分类</span><span class="cat" data-cat="5">烦乱</span><span class="cat" data-cat="6">未分类</span>-->
+              <% if(cats instanceof Array) { %>
+              <% if(cats.length > 0) { %>
+              <% for(var i=0,len=cats.length;i<len;i++) { %>
+              <!--<li class="line"><span class="fl"><a href="/post/<%= cats[i]["_id"] %>" target="_blank"><%= cats[i]["cat"] %></a></span><span class="fr action"><a href="/edit/<%= cats[i]["_id"] %>">编辑</a><a href="/post/<%= cats[i]["_id"] %>" target="_blank">查看</a><a href="/delete/<%= cats[i]["_id"] %>" class="delete">删除</a></span></li>-->
+
+                <span class="cat" data-cat="<%= cats[i]["_id"] %>"><%= cats[i]["cat"] %></span>
+
+
+
+              <% } } else { %>
+              <span style="text-align:center;">还没有添加分类呢！</span>
+              <% } } else { %>
+              <span style="text-align:center;">服务器错误，请稍后重试！</span>
+              <% } %>
+            </div>
+        </div>
+      </div>
+        <!--<div class="menber_prompt_top"><p class="menber_welcomeuser">标签<input type="text" id="post_tag"></p></div>-->
+      </form>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+  $(function(){
+
+    //编辑器
+    $('#pt_content').redactor();
+
+    //分类
+    $(".cat").click(function(){
+      toggle($(this),"select",catSelect)
+    });
+    //提交
+    $("#post_new").submit(function(){
+      //var post_title = encodeURIComponent($("#post_title").val());
+      //var pt_content = encodeURIComponent($("#pt_content").val());
+      //var post_cat   = encodeURIComponent(tcat);
+      //var post_tag   = encodeURIComponent($("#post_tag").val());
+      var post_title = $("#post_title").val();
+      var pt_content = $("#pt_content").val() || null;
+      var post_cat   = tcat || null;
+      var post_tag   = $("#post_tag").val() || null;
+      if (post_title == '') {
+        alert("未填写文章标题！");
+        return false
+      }
+      if (pt_content == '') {
+        if (!confirm("提交没有正文的文章？")) {
+          return false
+        }
+      };
+      $("#submit").val("发表中");
+      $.ajax({
+        type:"post",
+        url:'post_new',
+        data:{"post_title":post_title,"pt_content":pt_content,"post_cat":post_cat,"post_tag":post_tag},
+        success:function(json){
+          var data = $.parseJSON(json);
+          $("#submit").val(data.msg);
+          setTimeout(function(){window.location.href="/edit/"+data.post_id;},1000)
+        },
+        error:function(){
+          $("#submit").val("发表失败");
+        },
+        timeout:5000
+      });
+      return false
+    });
+  });
+
+
+
+
+
+  var tcat = [];
+
+  function catSelect(aclass){
+    var $cat = $(".cat");
+        tcat = []
+    $cat.each(function(index){
+      var $eq = $cat.eq(index);
+      var isselect = $eq.hasClass(aclass);
+      if (isselect) {
+        tcat.push($eq.attr("data-cat"))
+      };
+    })
+
+    /*
+    var $cat = $(".cat");
+    var leng = $cat.length;
+    var html = '';
+    for (var i = 0; i < leng; i++) {
+      html += '<input'
+    };*/
+    //var aclass = 'aa', val = 'aa';
+    //var html = '<input type="checkbox" class="'+aclass+'" value="'+val+'" checked>';
+  }
+
+  function toggle(obj,aclass,callback){
+      var $this = obj;
+      var isselect = $this.hasClass(aclass);
+      if (isselect) {
+        $this.removeClass(aclass);
+      } else {
+        $this.addClass(aclass);
+      };
+      if (typeof callback === 'function') {
+        callback(aclass);
+      }
+      
+  }
+
+</script>
+<% include member_footer %>

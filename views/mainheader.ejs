@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>一米</title>
+<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+<!--[if lte IE 8]>
+	<link rel="stylesheet" href="/stylesheets/style/ie8.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="js/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div id="top">
+		<div class="navtitle">
+	      <h2><a href="/"><%= blogname %></a></h2>
+	      <% if(!thesession) { %>
+	      <span class="fr current"><a href="/login" <% if(current == 'login'){ %> class="current" <% } %>>登录</a></span><span class="fr"><a <% if(current == 'register'){ %> class="current" <% } %> href="/register">注册</a></span>
+	      <% } else { %>
+	      <span class="fr"><a href="/logout">退出</a></span><span class="fr"><a href="/mcenter">用户中心</a></span>
+	      <% } %>
+	    </div>
+	</div>
+	<img src="/images/background/bg.jpg" id="bg">

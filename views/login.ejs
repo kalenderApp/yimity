@@ -1,0 +1,147 @@
+<% include header %>
+	<form id="register-form" name="register-form" method="post" action="">
+		<label>邮 箱：
+			<input type="text" class="text normal-border" name="email" id="email" required error-msg="请填写正确的邮箱！" placeholder="请输入邮箱地址" value="yimity@yimity.com"><q class="tips"></q>
+		</label>
+
+		<label>密 码：
+			<input type="password" class="text normal-border" name="password" id="password" required error-msg="请填写正确密码！" placeholder="请输入密码" value="123456"><q class="tips"></q>
+		</label>
+
+		<input type="submit" id="submit" value="登  录" style="margin-left:58px;"><q class="tips"></q>
+		<!--<div class="desp">
+			<p>说明：</p>
+			<p>1. a@b.com，b@b.com，c@b.com 已存在。</p>
+			<p>2. a#b.com，b#b.com，c#b.com 或者空为 不正确邮箱地址！</p>
+			<p>3. a@c.com，b@c.com，c@c.com 或者空为 注册失败！</p>
+			<p>4. 前台未做过多的正确性判定！</p>
+		</div>-->
+	</form>
+	<script type="text/javascript">
+		if(!String.prototype.trim) {
+			String.prototype.trim = function () {
+				return this.replace(/^\s+|\s+$/g,'');
+			};
+		}
+		var isSubmit = true;
+		var isMail = function(val) {
+        	var pattern = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        	return pattern.exec(val);
+        }
+
+		function creatXHR(){  //创建兼容的XHR对象
+			if (window.XMLHttpRequest) {//IE7+ Chrom Opera Firefox 
+				return new XMLHttpRequest();  //XMLHttpRequest
+			} else { // IE6
+				return new ActiveXObject("Microsoft.XMLHTTP");  //new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		}
+
+		function $id(elm){ //通过ID返回HTML对象
+			if (typeof elm !== 'string') {
+				alert("请输入HTML元素的ID名！");
+				return false
+			} else {
+				return document.getElementById(elm);
+			};
+		}
+
+		function modiUrl(url,data){ //检测url，如果url中含有 ？ ，则后续的参数以 & 头，否则就以 ？ 开头
+			if (url.indexOf("?") != -1) {
+				return url+"&"+serialize(data);
+			} else {
+				return url+"?"+serialize(data);
+			};
+		}
+
+		function serialize(data){ //检测 data 类型，序列化字符串
+			if (typeof data == "object") {
+				var dataarray = [];
+				for(var x in data){
+					dataarray.push(encodeURIComponent(x)+'='+encodeURIComponent(data[x]));
+				}
+				return dataarray.join("&");
+			}else{
+				alert("数据格式错误！");
+				return false
+			}
+		}
+
+		function validateData(obj,method,url,data,callback){
+			var xhr      = creatXHR(),
+				iscancel = setTimeout(function(){xhr.abort();console.log("超时取消！");},5000); // 设定超时取消
+
+			xhr.onreadystatechange = function() {  //绑定事件
+				if (xhr.readyState == 4 && xhr.status ==200){ //此时数据可用
+
+					var res = (window.JSON)?(JSON.parse(xhr.responseText)):(eval("("+xhr.responseText+")"));//解析 json字符串
+					
+					obj.nextSibling.innerHTML = res.msg;
+					console.log(obj);
+					if (res.code == 0 || res.code == 2) {
+						obj.nextSibling.style.color = 'red';
+					} else {
+						obj.nextSibling.style.color = '#5B636A';
+						if(callback) {callback()};
+					};
+					clearTimeout(iscancel);//如果响应成功，取消定时函数
+
+				}
+			}
+
+			//检测 Method 方法，GET POST
+			if (method.toLowerCase() === "get") {
+				xhr.open("GET",modiUrl(url,data),true);
+				xhr.send(null);
+			} else if (method.toLowerCase() === "post"){
+				xhr.open("POST",url,true);
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(serialize(data));
+			};
+			
+			
+		}
+
+		$id("email").onblur = function(){
+			var email = this.value.trim();
+			if(email == "" || !isMail(email)){
+				this.nextSibling.innerHTML = "请输入正确的邮箱！";
+				this.nextSibling.style.color = 'red';
+				//alert();
+				isSubmit = false
+				return false
+				//validateData(this,"GET","login/validate",{"email":email});
+			}
+		};
+
+		$id("password").onblur = function(){
+			var psw = this.value.trim();
+			if(psw.length < 6){
+				this.nextSibling.innerHTML = "请输入正确的密码！";
+				this.nextSibling.style.color = 'red';
+				isSubmit = false
+				return false
+			} else {
+				this.nextSibling.innerHTML = "";
+				this.nextSibling.style.color = '#5B636A';
+				isSubmit = true
+				return false
+			}
+		};
+
+		$id("register-form").onsubmit = function(){
+			var email    = $id("email").value.trim(),
+				password = $id("password").value.trim();
+			if(email != "" && isMail(email) && password.length >= 6){
+				isSubmit = true
+				validateData($id("submit"),"POST","login",{"email":email,"password":password},function(){window.location.href="/";});
+				return false;
+			}else{
+				alert("请输入正确的邮箱和密码！");
+				isSubmit = false
+				return false
+			}
+		};
+
+	</script>
+<% include footer %>

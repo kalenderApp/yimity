@@ -1,0 +1,58 @@
+<% include header %>
+<% include member_left %>
+  <div class="menber_right">
+    <div class="menber_avatar">
+      <div class="menber_useravatar"><img src="images/temp/touxiang.jpg" width="40" height="40" alt="用户头像" /></div>
+      <p><span>文章列表</p>
+    </div>
+    <div class="menber_welcome">
+      <ul id="listline">
+        <% if(posts instanceof Array) { %>
+        <% if(posts.length > 0) { %>
+        <% for(var i=0,len=posts.length;i<len;i++) { %>
+        <li class="line"><span class="fl"><a href="/post/<%= posts[i]["_id"] %>" target="_blank"><%= posts[i]["post_title"] %></a></span><span class="fr action"><a href="/edit/<%= posts[i]["_id"] %>">编辑</a><a href="/post/<%= posts[i]["_id"] %>" target="_blank">查看</a><a href="/delete/<%= posts[i]["_id"] %>" class="delete">删除</a></span></li>
+        <% } } else { %>
+        <li class="line" style="text-align:center;"><span class="fl">您还没有发布过文章呢！</span></li>
+        <% } } else { %>
+        <li class="line"><span class="fl">服务器错误，请稍后重试！</span></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    //删除文章
+    $(".delete").click(function(){
+      var $_this = $(this);
+      $.ajax({
+        type:"get",
+        url:$_this.attr("href"),
+        //data:{"post_id":post_id},
+        success:function(status){
+          var json = $.parseJSON(status);
+          if (json.code == 1 ) {
+            alert(json.msg);
+            $_this.parent().parent(".line").fadeOut();
+          }else{
+            alert(json.msg);
+          }
+        },
+        error:function(){
+          alert("服务器错误，请稍后重试！");
+        },
+        timeout:5000
+      });
+      return false
+    });
+
+    //显示隐藏
+    $("#listline li").hover(function(){
+      $(this).children(".action").stop().fadeIn();      
+    },function(){
+      $(this).children(".action").hide();      
+    });
+  });
+</script>
+<% include member_footer %>

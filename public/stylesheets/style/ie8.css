@@ -1,0 +1,21 @@
+body {
+	font-family:"微软雅黑", "宋体", "黑体", Helvetica, arial, sans-serif;
+}
+aside ul {
+	background: url(../images/ulbg.png) no-repeat;
+}
+aside li.selected {
+	background: url(../images/libg.png) no-repeat;
+	color:#CCC;
+}
+aside li:hover {
+	background: url(../images/libg.png) no-repeat;
+	color:#CCC;
+}
+aside li.selected a {
+	color:#E54B5D;
+}
+footer {
+	background: url(../images/footer.png) no-repeat;
+	color:RGB(148,148,148);
+}
